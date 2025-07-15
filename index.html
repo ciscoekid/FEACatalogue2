@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domestic Helper Catalogue</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Light gray background from reference */
+        }
+        .filter-section {
+            background-color: white;
+            border-radius: 0.5rem;
+            border: 1px solid #dee2e6;
+        }
+        .profile-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 0.5rem;
+            border: 1px solid #dee2e6;
+            background-color: white;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #007bff; /* Signature Blue */
+            color: white;
+            transition: background-color 0.3s ease;
+            border-radius: 0.375rem;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker Blue */
+        }
+        .btn-secondary {
+             background-color: #6c757d;
+             color: white;
+             transition: background-color 0.3s ease;
+             border-radius: 0.375rem;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .form-select, .form-checkbox {
+            border-color: #ced4da;
+        }
+        .form-select:focus, .form-checkbox:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-hands-helping text-3xl text-blue-600"></i>
+                        <h1 class="text-2xl font-semibold text-gray-800">Helper Catalogue</h1>
+                    </div>
+                    <p class="text-gray-600 hidden md:block">Connecting Families in Hong Kong</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                <!-- Filters -->
+                <aside class="lg:col-span-3 mb-8 lg:mb-0">
+                    <div class="filter-section p-6 sticky top-28">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-6 pb-4 border-b">Filter Options</h2>
+                        <div class="space-y-6">
+                            <!-- Age Filter -->
+                            <div>
+                                <label for="age" class="flex items-center text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fa-solid fa-cake-candles w-5 mr-2 text-gray-400"></i>
+                                    Age Range
+                                </label>
+                                <select id="age" class="form-select mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none sm:text-sm rounded-md">
+                                    <option value="all">All Ages</option>
+                                    <option value="20-30">20-30</option>
+                                    <option value="31-40">31-40</option>
+                                    <option value="41-50">41-50</option>
+                                    <option value="51+">51+</option>
+                                </select>
+                            </div>
+
+                            <!-- Nationality Filter -->
+                            <div>
+                                <label for="nationality" class="flex items-center text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fa-solid fa-flag w-5 mr-2 text-gray-400"></i>
+                                    Nationality
+                                </label>
+                                <select id="nationality" class="form-select mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none sm:text-sm rounded-md">
+                                    <option value="all">All Nationalities</option>
+                                    <option value="Filipino">Filipino</option>
+                                    <option value="Indonesian">Indonesian</option>
+                                    <option value="Thai">Thai</option>
+                                    <option value="Sri Lankan">Sri Lankan</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Contract Status Filter -->
+                            <div>
+                                <label for="contract_status" class="flex items-center text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fa-solid fa-file-contract w-5 mr-2 text-gray-400"></i>
+                                    Contract Status
+                                </label>
+                                <select id="contract_status" class="form-select mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none sm:text-sm rounded-md">
+                                    <option value="all">All Statuses</option>
+                                    <option value="Finished Contract">Finished Contract</option>
+                                    <option value="Break Contract">Break Contract</option>
+                                    <option value="First Timer">First Timer</option>
+                                </select>
+                            </div>
+
+                            <!-- Skills Filter -->
+                            <div>
+                                <h3 class="flex items-center text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fa-solid fa-star w-5 mr-2 text-gray-400"></i>
+                                    Skills
+                                </h3>
+                                <div id="skills-filter" class="space-y-2 max-h-48 overflow-y-auto pr-2">
+                                    <!-- Skills will be populated by JS -->
+                                </div>
+                            </div>
+                            
+                            <button id="reset-filters" class="w-full btn-secondary font-bold py-2 px-4">
+                                Reset Filters
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Profile Grid -->
+                <div class="lg:col-span-9">
+                    <div id="loading" class="text-center py-12">
+                        <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
+                        <p class="mt-4 text-gray-600">Loading profiles...</p>
+                    </div>
+                    <div id="no-results" class="hidden text-center py-12 bg-white rounded-lg border">
+                         <i class="fas fa-search-minus text-4xl text-gray-400"></i>
+                        <p class="mt-4 text-gray-600 font-semibold">No helpers match your criteria.</p>
+                        <p class="text-sm text-gray-500">Try adjusting your filters.</p>
+                    </div>
+                    <div id="profile-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <!-- Profiles will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-white border-t mt-12">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-500">
+                <p>&copy; 2024 Domestic Helper Catalogue. All rights reserved.</p>
+                <p class="text-sm mt-1">A platform to connect families with reliable help.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mock data - in a real application, this would come from a Google Sheet
+            const mockData = [
+                { id: 'DH001', name: 'Maria Dela Cruz', age: 32, nationality: 'Filipino', experience: 8, contract_status: 'Finished Contract', skills: ['Child Care', 'Cooking', 'Elderly Care'], summary: 'Experienced and caring helper, great with kids and seniors. Excellent cook.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' },
+                { id: 'DH002', name: 'Siti Hartati', age: 28, nationality: 'Indonesian', experience: 4, contract_status: 'Finished Contract', skills: ['General Housekeeping', 'Cooking'], summary: 'Hardworking and efficient with general household chores. Good cook.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' },
+                { id: 'DH003', name: 'Anna Reyes', age: 41, nationality: 'Filipino', experience: 15, contract_status: 'Finished Contract', skills: ['Elderly Care', 'Special Needs Care', 'Cooking'], summary: 'Specializes in elderly care, with a patient and compassionate personality.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' },
+                { id: 'DH004', name: 'Dewi Lestari', age: 25, nationality: 'Indonesian', experience: 2, contract_status: 'Break Contract', skills: ['Child Care', 'Pet Care'], summary: 'Energetic and loves animals. Great with young children and pets.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' },
+                { id: 'DH005', name: 'Wanida Somchai', age: 35, nationality: 'Thai', experience: 10, contract_status: 'Finished Contract', skills: ['Cooking', 'Thai Cuisine', 'General Housekeeping'], summary: 'Expert in Thai cuisine and a very organized housekeeper.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' },
+                { id: 'DH006', name: 'Lourdes Santos', age: 45, nationality: 'Filipino', experience: 20, contract_status: 'Finished Contract', skills: ['Newborn Care', 'Child Care', 'Cooking'], summary: 'Extensive experience with newborns and toddlers. A true professional.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' },
+                { id: 'DH007', name: 'Yuni Indah', age: 30, nationality: 'Indonesian', experience: 5, contract_status: 'Finished Contract', skills: ['General Housekeeping', 'Marketing', 'Car Washing'], summary: 'Reliable and trustworthy, excels at keeping a home spotless.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' },
+                { id: 'DH008', name: 'Priya Perera', age: 38, nationality: 'Sri Lankan', experience: 12, contract_status: 'Finished Contract', skills: ['Elderly Care', 'Cooking', 'English Speaking'], summary: 'Fluent in English, very experienced with elderly companionships.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' },
+                { id: 'DH009', name: 'Isabelle Garcia', age: 29, nationality: 'Filipino', experience: 3, contract_status: 'First Timer', skills: ['Child Care', 'General Housekeeping'], summary: 'Eager to learn and hardworking. A great choice for a first-time employer.', image: 'https://placehold.co/400x400/E2E8F0/4A5568?text=Profile' }
+            ];
+
+            const profileGrid = document.getElementById('profile-grid');
+            const loadingIndicator = document.getElementById('loading');
+            const noResultsMessage = document.getElementById('no-results');
+            const ageFilter = document.getElementById('age');
+            const nationalityFilter = document.getElementById('nationality');
+            const contractStatusFilter = document.getElementById('contract_status');
+            const skillsFilterContainer = document.getElementById('skills-filter');
+            const resetFiltersButton = document.getElementById('reset-filters');
+
+            let allHelpers = [];
+
+            const skillIcons = {
+                'Child Care': 'fa-solid fa-child-reaching',
+                'Elderly Care': 'fa-solid fa-person-cane',
+                'Cooking': 'fa-solid fa-utensils',
+                'General Housekeeping': 'fa-solid fa-broom',
+                'Pet Care': 'fa-solid fa-paw',
+                'Special Needs Care': 'fa-solid fa-hand-holding-medical',
+                'Newborn Care': 'fa-solid fa-baby',
+                'Thai Cuisine': 'fa-solid fa-pepper-hot',
+                'Marketing': 'fa-solid fa-cart-shopping',
+                'Car Washing': 'fa-solid fa-car',
+                'English Speaking': 'fa-solid fa-language'
+            };
+
+            function populateSkillsFilter(helpers) {
+                const allSkills = new Set();
+                helpers.forEach(helper => {
+                    helper.skills.forEach(skill => allSkills.add(skill));
+                });
+
+                skillsFilterContainer.innerHTML = '';
+                [...allSkills].sort().forEach(skill => {
+                    const skillId = `skill-${skill.replace(/\s+/g, '-')}`;
+                    const skillElement = `
+                        <div class="flex items-center">
+                            <input id="${skillId}" name="skills" type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded cursor-pointer">
+                            <label for="${skillId}" class="ml-3 text-sm text-gray-600 cursor-pointer">${skill}</label>
+                        </div>
+                    `;
+                    skillsFilterContainer.insertAdjacentHTML('beforeend', skillElement);
+                });
+            }
+
+            function renderProfiles(helpers) {
+                profileGrid.innerHTML = '';
+                if (helpers.length === 0) {
+                    noResultsMessage.style.display = 'block';
+                    profileGrid.style.display = 'none';
+                } else {
+                    noResultsMessage.style.display = 'none';
+                    profileGrid.style.display = 'grid';
+                }
+
+                helpers.forEach(helper => {
+                    const skillsHtml = helper.skills.map(skill => `
+                        <div class="flex items-center space-x-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-full">
+                            <i class="${skillIcons[skill] || 'fa-solid fa-star'}"></i>
+                            <span>${skill}</span>
+                        </div>
+                    `).join('');
+
+                    const card = `
+                        <div class="profile-card overflow-hidden flex flex-col">
+                            <img src="${helper.image}" alt="${helper.name}" class="w-full h-48 object-cover">
+                            <div class="p-5 flex-grow flex flex-col">
+                                <h3 class="text-lg font-bold text-gray-900">${helper.name}</h3>
+                                <p class="text-sm text-gray-500 mb-3">Ref: ${helper.id}</p>
+                                
+                                <div class="text-sm text-gray-700 space-y-2 mb-4">
+                                    <div class="flex items-center"><i class="fa-solid fa-flag w-5 mr-2 text-gray-400"></i><span>${helper.nationality}</span></div>
+                                    <div class="flex items-center"><i class="fa-solid fa-cake-candles w-5 mr-2 text-gray-400"></i><span>${helper.age} years old</span></div>
+                                    <div class="flex items-center"><i class="fa-solid fa-briefcase w-5 mr-2 text-gray-400"></i><span>${helper.experience} years experience</span></div>
+                                    <div class="flex items-center"><i class="fa-solid fa-file-contract w-5 mr-2 text-gray-400"></i><span>${helper.contract_status}</span></div>
+                                </div>
+                                
+                                <p class="text-sm text-gray-600 flex-grow mb-4">${helper.summary}</p>
+                                
+                                <div class="flex flex-wrap gap-2 mb-5">
+                                    ${skillsHtml}
+                                </div>
+                                <div class="mt-auto border-t pt-4">
+                                     <button class="w-full btn-primary font-bold py-2 px-4 text-sm">
+                                        View Full Profile
+                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    profileGrid.insertAdjacentHTML('beforeend', card);
+                });
+            }
+
+            function filterAndRender() {
+                const ageValue = ageFilter.value;
+                const nationalityValue = nationalityFilter.value;
+                const contractStatusValue = contractStatusFilter.value;
+                const selectedSkills = Array.from(skillsFilterContainer.querySelectorAll('input:checked')).map(input => input.value);
+
+                let filteredHelpers = allHelpers.filter(helper => {
+                    // Age filter
+                    const [minAge, maxAge] = ageValue.split('-').map(Number);
+                    if (ageValue !== 'all') {
+                        if (ageValue === '51+') {
+                            if (helper.age < 51) return false;
+                        } else if (helper.age < minAge || helper.age > maxAge) {
+                            return false;
+                        }
+                    }
+
+                    // Nationality filter
+                    if (nationalityValue !== 'all' && helper.nationality !== nationalityValue) {
+                        return false;
+                    }
+                    
+                    // Contract Status filter
+                    if (contractStatusValue !== 'all' && helper.contract_status !== contractStatusValue) {
+                        return false;
+                    }
+
+                    // Skills filter
+                    if (selectedSkills.length > 0) {
+                        if (!selectedSkills.every(skill => helper.skills.includes(skill))) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                });
+
+                renderProfiles(filteredHelpers);
+            }
+            
+            function resetFilters() {
+                ageFilter.value = 'all';
+                nationalityFilter.value = 'all';
+                contractStatusFilter.value = 'all';
+                skillsFilterContainer.querySelectorAll('input:checked').forEach(input => input.checked = false);
+                filterAndRender();
+            }
+
+            function fetchData() {
+                // Simulate API call
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(mockData);
+                    }, 1000);
+                });
+            }
+
+            async function init() {
+                loadingIndicator.style.display = 'block';
+                profileGrid.style.display = 'none';
+
+                allHelpers = await fetchData();
+                
+                loadingIndicator.style.display = 'none';
+                profileGrid.style.display = 'grid';
+
+                populateSkillsFilter(allHelpers);
+                renderProfiles(allHelpers);
+
+                [ageFilter, nationalityFilter, contractStatusFilter].forEach(filter => {
+                    filter.addEventListener('change', filterAndRender);
+                });
+                
+                skillsFilterContainer.addEventListener('change', (e) => {
+                    if (e.target.matches('input[type="checkbox"]')) {
+                        filterAndRender();
+                    }
+                });
+                
+                resetFiltersButton.addEventListener('click', resetFilters);
+            }
+
+            init();
+        });
+    </script>
+
+</body>
+</html>
